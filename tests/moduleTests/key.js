@@ -15,6 +15,12 @@ export default function tests() {
         assert.equal(conv('Eb'), 'E-', 'E- major passed');
     });
 
+    test('music21.key.deriveByDegree', assert => {
+        const sc = new music21.scale.MajorScale('F');
+        sc.deriveByDegree();
+        assert.equal(sc);
+    });
+    
     test('music21.key.Key', assert => {
         const testSharps = [
             // sharps, mode, given name, given mode
