@@ -378,8 +378,13 @@ export class Key extends KeySignature {
     getScaleDegreeFromPitch(pitchTarget, ...args) {
         return this._scale.getScaleDegreeFromPitch(pitchTarget, ...args);
     }
-    deriveByDegree() {
-        return 'true';
+
+    deriveByDegree(self, degree, pitchRef) {
+        
+        const ret = this._scale.deriveByDegree(self, degree, pitchRef);
+        console.log('test', ret);
+        //ret.mode = self.mode;
+        return ret;
     }
 }
 

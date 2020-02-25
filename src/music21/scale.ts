@@ -194,6 +194,7 @@ class AbstractScale extends Scale {
             const thisIntv = this._net[i % this._net.length];
             pitchReference = thisIntv.transposePitch(pitchReference);
         }
+        console.log(pitchReference);
         return pitchReference;
     }
 
@@ -225,6 +226,20 @@ class AbstractScale extends Scale {
         } else {
             return realizedIndex + 1;
         }
+    }
+
+    getNewTonicPitch( 
+        self, 
+        pitchReference, 
+        nodeName, 
+    ) {
+        const post = this.getPitchFromNodeDegree(
+            pitchReference,
+            nodeName,
+            1,
+        );
+        console.log(post);
+        return this.clone(post);
     }
 }
 
@@ -405,6 +420,29 @@ export class ConcreteScale extends Scale {
             pitchTarget
         );
     }
+
+    /*
+    *   Given a scale degree and a pitch
+    *   Return a new class that satisfies that condition
+    */
+    deriveByDegree(self, degree, pitchRef) {
+        const pitchTest = self.abstract.getNewTonicPitch(
+            pitchRef, 
+            degree,
+        );
+        if (pitchTest === null) {
+            throw new Music21Exception('cannot derive new tonic');
+        }
+        self.tonic = pitchRef;
+        const newScale = self;
+        if (newScale.abstract === null) {
+            newScale.abstract = this.clone(self.abstract);
+        }
+        console.log(newScale);
+        return newScale;
+
+    }
+
 }
 
 /**
