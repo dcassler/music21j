@@ -190,11 +190,11 @@ class AbstractScale extends Scale {
 
     getPitchFromNodeDegree(pitchReference, unused_nodeName, nodeDegreeTarget) {
         const zeroIndexDegree = nodeDegreeTarget - 1;
+        console.log(zeroIndexDegree);
         for (let i = 0; i < zeroIndexDegree; i++) {
             const thisIntv = this._net[i % this._net.length];
             pitchReference = thisIntv.transposePitch(pitchReference);
         }
-        console.log(pitchReference);
         return pitchReference;
     }
 
@@ -228,18 +228,20 @@ class AbstractScale extends Scale {
         }
     }
 
-    getNewTonicPitch( 
-        self, 
+    getNewTonicPitch(
+        self,
         pitchReference, 
         nodeName, 
     ) {
-        const post = this.getPitchFromNodeDegree(
+        console.log(pitchReference, nodeName);
+        console.log('getNewTonicPitch');
+        const post = this.getPitchFromNodeDegree( // This does nothing but return pitchReference
             pitchReference,
             nodeName,
             1,
         );
-        console.log(post);
-        return this.clone(post);
+        console.log('post', post);
+        return post;
     }
 }
 
@@ -426,16 +428,22 @@ export class ConcreteScale extends Scale {
     *   Return a new class that satisfies that condition
     */
     deriveByDegree(self, degree, pitchRef) {
-        const pitchTest = self.abstract.getNewTonicPitch(
+        console.log('self', self.abstract);
+        console.log(this);
+        const pitchTest = this.abstract.getNewTonicPitch(self,
             pitchRef, 
             degree,
         );
+        console.log('pitchTest', pitchTest);
         if (pitchTest === null) {
             throw new Music21Exception('cannot derive new tonic');
         }
-        self.tonic = pitchRef;
-        const newScale = self;
-        if (newScale.abstract === null) {
+        //const newScale = new scale.Scale(pitchTest);
+        const newScale = this.clone(self);
+        newScale.tonic = pitchTest;
+        console.log('newscale');
+        console.log(newScale);
+        if (newScale.abstract === undefined) {
             newScale.abstract = this.clone(self.abstract);
         }
         console.log(newScale);

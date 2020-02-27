@@ -380,10 +380,11 @@ export class Key extends KeySignature {
     }
 
     deriveByDegree(self, degree, pitchRef) {
-        
         const ret = this._scale.deriveByDegree(self, degree, pitchRef);
         console.log('test', ret);
-        //ret.mode = self.mode;
+        ret.mode = self.mode;
+        ret.correlationCoefficient = undefined;
+        ret.alternateInterpretations = [];
         return ret;
     }
 }

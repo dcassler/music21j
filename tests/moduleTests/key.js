@@ -16,9 +16,11 @@ export default function tests() {
     });
 
     test('music21.key.deriveByDegree', assert => {
-        const sc = new music21.scale.MajorScale();
-        console.log(sc);
-        assert.equal(sc.deriveByDegree(sc, 7, 'G#').toString(), '<music21.scale.MajorScale A major>');
+        const sc = new music21.key.Key('c');
+        const x = sc.deriveByDegree(sc, 3, 'B-');
+        console.log('print');
+        console.log(x);
+        assert.equal(x.toString(), '<music21.key.Key of g minor>');
     });
     
     test('music21.key.Key', assert => {
