@@ -108,6 +108,8 @@ export default function tests() {
         n.quarterLength = 2;
         const m = new music21.stream.Measure();
         n._getMeasureOffset(n); // should return 0
+        console.log(n._getMeasureOffset(n));
+        assert.equal(n._getMeasureOffset(n), 0.0, 'returns 0');
         n.quarterLength = 0.5;
         m.repeatAppend(n, 4);
         const arrayOne = [];
@@ -116,7 +118,21 @@ export default function tests() {
                 arrayOne.push(x._getMeasureOffset(x));
             }
         }
-        assert.deepEqual(arrayOne, [0.0, 0.5, 1.0, 1.5]);
-
+        assert.deepEqual(arrayOne, [0.0, 0.5, 1.0, 1.5], 'notes without padding');
+        m.paddingLeft = 2;
+        const arrayTwo = [];
+        for (const y of m.notes) {
+            if (y) {
+                arrayTwo.push(y._getMeasureOffset(y, true));
+            }
+        }
+        assert.deepEqual(arrayTwo, [2.0, 2.5, 3.0, 3.5], 'notes with padding');
+        const arrayThree = [];
+        for (const y of m.notes) {
+            if (y) {
+                arrayThree.push(y._getMeasureOffset(y));
+            }
+        }
+        assert.deepEqual(arrayThree, [0.0, 0.5, 1.0, 1.5], 'notes with padding set to off');
     }); 
 }
