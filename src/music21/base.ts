@@ -26,8 +26,7 @@ import * as sites from './sites';
 
 // imports for typing only
 import { Stream, Measure } from './stream';
-import { StreamException } from './exceptions21';
-import { Music21Exception } from './exceptions21';
+import { StreamException, Music21Exception } from './exceptions21';
 
 
 
