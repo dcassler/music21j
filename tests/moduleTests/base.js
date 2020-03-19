@@ -85,7 +85,7 @@ export default function tests() {
         assert.equal(a.notes.length, 10);
 
     });
-    test('music21.base.getTimeSignatureForBeat', assert => {
+    test('music21.base.Music21Object.getTimeSignatureForBeat', assert => {
         const m = new music21.stream.Measure();
         const tsThreeFour = new music21.meter.TimeSignature('3/4');
         m.insert(0, tsThreeFour);
@@ -93,4 +93,30 @@ export default function tests() {
         assert.equal(x.ratioString, '3/4', 'returns time signature');
 
     });
+    test('music21.base.Music21Object.getBeat', assert => {
+        const n = new music21.note.Note();
+        n.quarterLength = 0.5;
+        const m = new music21.stream.Measure();
+        m.timeSignature = new music21.meter.TimeSignature('3/4');
+        m.repeatAppend(n, 6);
+        console.log(m);
+        assert.equal();
+        
+    });
+    test('music21.base.Music21Object.getMeasureOffset', assert => {
+        const n = new music21.note.Note();
+        n.quarterLength = 2;
+        const m = new music21.stream.Measure();
+        n._getMeasureOffset(n); // should return 0
+        n.quarterLength = 0.5;
+        m.repeatAppend(n, 4);
+        const arrayOne = [];
+        for (const x of m.notes) {
+            if (x) {
+                arrayOne.push(x._getMeasureOffset(x));
+            }
+        }
+        assert.deepEqual(arrayOne, [0.0, 0.5, 1.0, 1.5]);
+
+    }); 
 }
