@@ -77,35 +77,12 @@ export default function tests() {
             'third site is sc'
         );
     });
-    test('music21.base.Music21Object.beat', assert => {
 
-        const noteC = new music21.note.Note('C4', 4); 
-        const noteD = new music21.note.Note('D4', 2);
-        const noteE = new music21.note.Note('E4', 2);
-        const noteF = new music21.note.Note('F4', 2);
-        const tsThreeFour = new music21.meter.TimeSignature('3/4');
-        const m = new music21.stream.Measure();
-        const m2 = new music21.stream.Measure();
-        const p = new music21.stream.Part();
-        const sc = new music21.stream.Score();
-        p.insert(1.0, m);
-        p.insert(3.0, m2);
-        p.insert(0, tsThreeFour);
-        m.append(noteC);
-        m2.append(noteD);
-        //stream1.append(m);
-        m2.append(noteE);
-        m2.append(noteF);
-        sc.insert(0.0, p);
-        sc.appendNewDOM(document.body);
-        //console.log('BLANK');
-        //console.log(sc);
-        //console.log('score', sc.getBeat(sc));
-        //console.log('note', noteC.getBeat(noteC));
-        //console.log('part', p.getBeat(p));
-        assert.deepEqual(sc.getBeat(sc), [4, 2, 4, 6]);
-        assert.deepEqual(p.getBeat(p), [4, 2, 4, 6]);
-        assert.deepEqual(noteC.getBeat(noteC), [4]);
+    test('music21.base.repeatAppend', assert => {
+        const a = new music21.stream.Stream();
+        const n = new music21.note.Note();
+        a.repeatAppend(n, 10);
+        assert.equal(a.notes.length, 10);
 
     });
     test('music21.base.getTimeSignatureForBeat', assert => {
