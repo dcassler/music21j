@@ -135,4 +135,30 @@ export default function tests() {
         }
         assert.deepEqual(arrayThree, [0.0, 0.5, 1.0, 1.5], 'notes with padding set to off');
     }); 
+    
+    test('music21.base.Music21Object.getMeasureOffsetOrMeterModulusOffset', assert => {
+        const m = new music21.stream.Measure();
+        const ts1 = new music21.meter.TimeSignature('3/4');
+        m.insert(0, ts1);
+        const n1 = new music21.note.Note();
+        m.insert(2, n1);
+        assert.equal(ts1.getMeasureOffsetOrMeterModulusOffset(ts1, n1), 2.0, 'base');
+        const n2 = new music21.note.Note();
+        m.insert(4.0, n2);
+        assert.equal(ts1.getMeasureOffsetOrMeterModulusOffset(ts1, n2), 1.0, 'excede range of modulus');
+        const ts2 = new music21.meter.TimeSignature('5/4');
+        const s2 = new music21.stream.Stream();
+        s2.insert(0, ts2);
+        const n3 = new music21.note.Note();
+        s2.insert(3, n3);
+        assert.equal(ts2.getMeasureOffsetOrMeterModulusOffset(ts2, n3), 3.0, 'Notes in stream w/ time sig');
+        const n4 = new music21.note.Note();
+        s2.insert(5, n4);
+        assert.equal(ts2.getMeasureOffsetOrMeterModulusOffset(ts2, n4), 0.0,
+            'Notes in stream w/ time sig, excede range');
+
+
+
+    });
+
 }
