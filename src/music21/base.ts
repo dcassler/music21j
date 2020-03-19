@@ -267,18 +267,41 @@ export class Music21Object extends prebase.ProtoM21Object {
 
     }
 
-    _getMeasureOffset(measure, includeMeasurePadding=false) { 
+    _getMeasureOffset(measure, includeMeasurePadding=false) {  // inclu temp set false
         const activeS = measure.activeSite;
         let offsetLocal; // needed to fix odd scope issue
         if (activeS !== undefined && activeS.isMeasure) {
             offsetLocal = activeS.elementOffset(measure);
             if (includeMeasurePadding) {
+                console.log('contains measure padding');
                 offsetLocal += activeS.paddingLeft;
             }
+            console.log('returning', offsetLocal);
+    
             return offsetLocal;
         }
         else {
             console.log('did not find activeSite as a measure');
+            const m = measure.getContextByClass('Measure');
+            if (m !== undefined) {
+                console.log('using found measure for offset access');
+                includeMeasurePadding = true;
+                try {
+                    if (includeMeasurePadding) {
+                        offsetLocal = m.elementOffset(measure) + m.paddingLeft;
+                    } else {
+                        offsetLocal = m.elementOffset(measure);
+                    }
+                } catch (error) {
+                    try {
+                        offsetLocal = measure.offset;
+                    } catch (error) {
+                        offsetLocal = 0.0; 
+                    }
+                }
+            } else {
+                offsetLocal = measure.offset;
+            }
             return offsetLocal;
         }
         
