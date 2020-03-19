@@ -258,8 +258,18 @@ export class Music21Object extends prebase.ProtoM21Object {
         return ts.getBeatProportion(ts.getMeasureOffsetOrMeterModulusOffset(input));
     }
     
-    getMeasureOffsetOrMeterModulusOffset(self, el) {
-
+    getMeasureOffsetOrMeterModulusOffset(input, el) {
+        const mOffset = el._getMeasureOffset(el);
+        const tsMeasureOffset = input._getMeasureOffset(input);
+        console.log('mOffset', mOffset, 'tsMeasureOffset', tsMeasureOffset);
+        if ((mOffset + tsMeasureOffset) < input.barDuration.quarterLength) {
+            console.log('first');
+            return mOffset;
+        } else {
+            const post = ((mOffset - tsMeasureOffset) % input.barDuration.quarterLength);
+            console.log('second', post, input.barDuration.quarterLength);
+            return post;
+        }
     }
 
 
@@ -276,7 +286,6 @@ export class Music21Object extends prebase.ProtoM21Object {
                 console.log('contains measure padding');
                 offsetLocal += activeS.paddingLeft;
             }
-            console.log('returning', offsetLocal);
     
             return offsetLocal;
         }
