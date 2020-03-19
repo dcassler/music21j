@@ -254,39 +254,34 @@ export class Music21Object extends prebase.ProtoM21Object {
     }
 
     getBeat(input) {
+        const ts = this.getTimeSignatureForBeat(input);
+        return ts.getBeatProportion(ts.getMeasureOffsetOrMeterModulusOffset(input));
+    }
+    
+    getMeasureOffsetOrMeterModulusOffset(self, el) {
 
     }
 
-    getMeasureOffset(measure, includeMeasurePadding=true) {
-        console.log(measure);
-        console.log(measure.measures);
-        const m = measure.measures;
-        if (m !== undefined) {
-            let offsetLocal = null;
-            // OffsetLocal has to be called, otherwise linter goes crazy
-            try {
-                if (includeMeasurePadding) {
-                    offsetLocal = m.elementOffset(measure) + m.paddingLeft;
-                    console.log(offsetLocal);
-                } else {
-                    offsetLocal = m.elementOffset(measure);
-                    console.log(offsetLocal);
-                }
-            } catch (SitesException) {
-                try {
-                    offsetLocal = measure.offset;
-                    console.log(offsetLocal);
-                } catch (AttributeError) {
-                    offsetLocal = 0.0;
-                    console.log(offsetLocal);
-                }
+
+    getBeatProportion(self, qLenPos) {
+
+    }
+
+    _getMeasureOffset(measure, includeMeasurePadding=false) { 
+        const activeS = measure.activeSite;
+        let offsetLocal; // needed to fix odd scope issue
+        if (activeS !== undefined && activeS.isMeasure) {
+            offsetLocal = activeS.elementOffset(measure);
+            if (includeMeasurePadding) {
+                offsetLocal += activeS.paddingLeft;
             }
             return offsetLocal;
-        } else {
-            const offsetLocal = measure.offset;
-            console.log(offsetLocal);
+        }
+        else {
+            console.log('did not find activeSite as a measure');
             return offsetLocal;
         }
+        
     }
 
     mergeAttributes(other) {
