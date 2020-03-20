@@ -272,9 +272,20 @@ export class Music21Object extends prebase.ProtoM21Object {
         }
     }
 
-
-    getBeatProportion(self, qLenPos) {
-
+    offsetToIndex(input, qLenPos, includeCoincidentBoundaries=false) {
+       if (qLenPos >= input.duration.quarterLength || qLenPos < 0) {
+            console.log('cannot access from qlenPos', qLenPos, ' where total duration is', input.duration.quarterLength);
+       }
+       const qPos = 0;
+       const match = undefined;
+       for (const i in common.range(input.length, undefined, undefined)) {
+            const start = qPos;
+            const end = opFrac
+       }
+    }
+    
+    getBeatProportion(ts, qLenPos) {
+       const beatIndex = ts.beatSequence.offsetToIndex(qLenPos);
     }
 
     _getMeasureOffset(measure, includeMeasurePadding=false) {  // inclu temp set false

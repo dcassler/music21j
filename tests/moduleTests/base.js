@@ -156,9 +156,17 @@ export default function tests() {
         s2.insert(5, n4);
         assert.equal(ts2.getMeasureOffsetOrMeterModulusOffset(ts2, n4), 0.0,
             'Notes in stream w/ time sig, excede range');
+    });
 
-
+    test('music21.base.Music21Object.getBeatProportion', assert => {
+        const ts1 = new music21.meter.TimeSignature('3/4');
+        ts1.getBeatProportion(ts1, 0.0);
 
     });
 
+    test('music21.base.Music21Object.offsetToIndex', assert => {
+        const ts1 = new music21.meter.TimeSignature('4/4');
+        ts1.offsetToIndex(ts1, 0.0);
+
+    });
 }

@@ -408,7 +408,22 @@ export function numToIntOrFloat(value: number): number {
         return value;
     }
 }
+export function isInt(n){
+    return Number(n) === n && n % 1 === 0;
+}
 
+export function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+export function opFrac(num: number): number {
+    const t = typeof(num);
+    if (isFloat(t)){
+        const ir = num.as_integer_ratio(); // Beyond my math level 
+    }
+
+
+    return number;
+}
 /**
  *
  * @param {string} path
