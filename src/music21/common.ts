@@ -408,13 +408,14 @@ export function numToIntOrFloat(value: number): number {
         return value;
     }
 }
-export function isInt(n){
+export function isInt(n) {
     return Number(n) === n && n % 1 === 0;
 }
 
-export function isFloat(n){
+export function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
+/* commented out opFrac
 export function opFrac(num: number): number {
     const t = typeof(num);
     const DENOM_LIMIT = 65535;
@@ -429,6 +430,7 @@ export function opFrac(num: number): number {
 
     return number;
 }
+*/
 /**
  *
  * @param {string} path
