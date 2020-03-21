@@ -279,7 +279,7 @@ export class Music21Object extends prebase.ProtoM21Object {
         const qPos = 0;
         let match;
         match = undefined; // fixes lint error
-        for (const i in common.range(input.length, undefined, undefined)) {
+        for (const i in common.range(0, input.length, undefined)) {
             if (i) {
                 const start = qPos;
                 const end = qPos + input[i].duration.quarterLength; // Awaiting correct opFrac function
@@ -297,6 +297,10 @@ export class Music21Object extends prebase.ProtoM21Object {
             }
         }
         return match;
+    }
+
+    offsetToSpan(input, qlenPos, permitMeterModulus = false) {
+        
     }
     
     getBeatProportion(ts, qLenPos) {

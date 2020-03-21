@@ -166,7 +166,10 @@ export default function tests() {
 
     test('music21.base.Music21Object.offsetToIndex', assert => {
         const ts1 = new music21.meter.TimeSignature('4/4');
-        ts1.offsetToIndex(ts1, 0.0);
+        assert.equal(ts1.offsetToIndex(ts1, 0.0), 0);
+        assert.equal(ts1.offsetToIndex(ts1, 3.5), 0);
+        assert.equal(ts1.offsetToIndex(ts1, 0.5), 0);
+        assert.equal(ts1.offsetToIndex(ts1, 4.5), 0);
 
     });
 }
