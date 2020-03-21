@@ -277,11 +277,24 @@ export class Music21Object extends prebase.ProtoM21Object {
             console.log('cannot access from qlenPos', qLenPos, ' where total duration is', input.duration.quarterLength);
        }
        const qPos = 0;
-       const match = undefined;
+       let match;
+       match = undefined; // fixes lint error
        for (const i in common.range(input.length, undefined, undefined)) {
             const start = qPos;
-            const end = opFrac
+            const end = common.opFrac(qPos + input[i].duration.quarterLength); // Awaiting correct opFrac function
+            if (includeCoincidentBoundaries) { 
+                if (start <= qLenPos && qLenPos <= end) { // needed to fix error
+                    match = i;
+                }
+            } else {
+                if(start <= qLenPos && qLenPos < end) {
+                    match = i;
+                    break;
+                }
+            }
+            qLenPos = common.opFrac(qPos + input[i].duration.quarterLength);
        }
+       return match;
     }
     
     getBeatProportion(ts, qLenPos) {
