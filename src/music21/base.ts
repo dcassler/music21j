@@ -273,32 +273,35 @@ export class Music21Object extends prebase.ProtoM21Object {
     }
 
     offsetToIndex(input, qLenPos, includeCoincidentBoundaries=false) {
-       if (qLenPos >= input.duration.quarterLength || qLenPos < 0) {
+        if (qLenPos >= input.duration.quarterLength || qLenPos < 0) {
             console.log('cannot access from qlenPos', qLenPos, ' where total duration is', input.duration.quarterLength);
-       }
-       const qPos = 0;
-       let match;
-       match = undefined; // fixes lint error
-       for (const i in common.range(input.length, undefined, undefined)) {
-            const start = qPos;
-            const end = common.opFrac(qPos + input[i].duration.quarterLength); // Awaiting correct opFrac function
-            if (includeCoincidentBoundaries) { 
-                if (start <= qLenPos && qLenPos <= end) { // needed to fix error
-                    match = i;
+        }
+        const qPos = 0;
+        let match;
+        match = undefined; // fixes lint error
+        for (const i in common.range(input.length, undefined, undefined)) {
+            if (i) {
+                const start = qPos;
+                const end = qPos + input[i].duration.quarterLength; // Awaiting correct opFrac function
+                if (includeCoincidentBoundaries) { 
+                    if (start <= qLenPos && qLenPos <= end) { // needed to fix error
+                        match = i;
+                    }
+                } else {
+                    if (start <= qLenPos && qLenPos < end) {
+                        match = i;
+                        break;
+                    }
                 }
-            } else {
-                if(start <= qLenPos && qLenPos < end) {
-                    match = i;
-                    break;
-                }
+                qLenPos = qPos + input[i].duration.quarterLength;
             }
-            qLenPos = common.opFrac(qPos + input[i].duration.quarterLength);
-       }
-       return match;
+        }
+        return match;
     }
     
     getBeatProportion(ts, qLenPos) {
-       const beatIndex = ts.beatSequence.offsetToIndex(qLenPos);
+        const beatIndex = ts.beatSequence.offsetToIndex(qLenPos);
+        console.log(beatIndex);
     }
 
     _getMeasureOffset(measure, includeMeasurePadding=false) {  // inclu temp set false
