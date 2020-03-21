@@ -417,8 +417,13 @@ export function isFloat(n){
 }
 export function opFrac(num: number): number {
     const t = typeof(num);
+    const DENOM_LIMIT = 65535;
     if (isFloat(t)){
-        const ir = num.as_integer_ratio(); // Beyond my math level 
+        //const ir = num.as_integer_ratio(); // Beyond my math level 
+        const ir = [num, num];
+        if (ir[1] > DENOM_LIMoffsetToindexIT) {
+           _preFracLimitDenominator() 
+        } 
     }
 
 
